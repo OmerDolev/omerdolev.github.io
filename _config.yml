@@ -7,9 +7,9 @@
 
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 #--------------------------
-title: TechChap                          # the main title
+title: OmerTech                          # the main title
 
-tagline: Welcome to my space.  # it will display as the sub-title
+tagline: Tech blog about things I learned and like.  # it will display as the sub-title
 
 # description: >-                        # used by seo meta and the atom feed
 #   A minimal, portfolio, sidebar,
@@ -21,8 +21,7 @@ url: ''
 
 author: Omer Dolev                  # change to your full name
 
-# TODO: add picture
-#avatar: /assets/img/sample/avatar.jpg   # support internet resources
+avatar: /assets/img/sample/avatar.jpg   # support internet resources
 
 github:
   username: OmerDolev             # change to your github username
