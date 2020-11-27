@@ -18,6 +18,7 @@
     static get LIGHT_MODE() { return "light"; }
 
     constructor() {
+      this.setDark();
       if (this.mode != null) {
         if (this.mode == ModeToggle.DARK_MODE) {
           if (!this.isSysDarkPrefer) {
