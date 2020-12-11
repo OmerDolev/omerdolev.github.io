@@ -24,20 +24,29 @@ enables automation.
 We can start understanding things if we look at the state things were before it container orchestration solutions were common. We are actually talking about how things were 
 deployed and running over time.
 
-##### Traditional Deployments
+**_NOTE:_** When writing "workload", I mean anything that does processing, anything that runs code or runs some sort of logic, whether it is handling requests, doing some async processing etc.
 
-Running applications on physical servers. There are lots of problems with this approach which will be described later (of course it's easy to discern retro), but for now let's continue.
+#### Traditional Deployments
 
-##### Virtualized Deployments
+Running workloads on physical servers. There are lots of problems with this approach which will be described later (of course it's easy to discern retro), but for now let's continue.
 
-Virtualization is a way to run multiple virtual machines (VMs) on one physical server. This is actually running multiple Operating systems (Linux, Windows, Embedded or whatever) that are independent of one another. This was the time when deploying virtual machines runnning the different applications and services was common.
+#### Virtualized Deployments
 
-##### Containerized Deployments
+Virtualization is a way to run multiple virtual machines (VMs) on one physical server. This is actually running multiple Operating systems (Linux, Windows, Embedded or whatever) concurrently on the same physical machine that are independent of one another. This was the time when deploying virtual machines runnning the different applications and services was common.
 
-Deployment of services and applications as containers. We will have a post about what are containers exactly. For now let's think about them as very lightweight VMs. This is the present, in which deployment of application on containers is very common.
+#### Containerized Deployments
+
+Deployment of workloads as containers. We will have a post about what are containers exactly. For now let's think about them as very lightweight VMs. This is the present, in which deployment of application on containers is very common.
 
 
-So now in a time where running application is mainly done by containers, there is something very important to keep in mind, and it's the availability of your application.
-When an application expriences a fault or a panic in the [Traditional Deployments](#traditional-deployments) era, there is probably monitoring for it, the relevant team would be alerted and would go straight to the server to fix, and later will try to understand what happened (in this case most of fixes are restarts).
+So now, in a time where running application is mainly done by containers, there is something very important to keep in mind, and it's the availability of your application.
+When an application expriences a fault or a panic in the [Traditional Deployments](#traditional-deployments) era, the relevant team would be alerted and would go straight to the server to fix, and later will try to understand what happened (in this case most of fixes are restarts).
+The same thing holds for VMs ([Virtualized Deployments](#virtualized-deployments)), where you relevant team would check the problem, fix, and try to understand the root cause.
 
-Bear in mind, that while the application was down, there was one less endpoint that could handle traffic or do some workload (might harm the availability of the service or make things run slower or for longer).
+But, in the [containers](#containerized-deployments) era something changed. A new outlook surfaced, in which workloads are **volatile**. It became very easy to just start a new container running the required workload instead of trying to fix the problem while there is downtime or degraded availability (downtime - when the service is unavailable).
+
+This is where K8s comes in, it provides you with a framework and tools to run distributed systems resiliently.
+Distributed systems are systems or a group of workloads that run on a number of machines (can range from a few to dozens and hundreds or more), which in it's simplest form can technically be achieved quite easily (it gets complicated when new use-cases arise, but we'll get into that).
+
+There are lots of things to think about when running distributed systems, K8s is based on loads of experience Google has in this field.
+While working with K8s there were many light bulbs that went on in my head, most of which I will try share.
