@@ -31,9 +31,9 @@ Let's try, for example, playing with the network namespace. Let's start by viewi
 
 ```bash
 omerd@myhost:~$ ip netns list
-omerd@myhost:~$ ip netns add ns1
+omerd@myhost:~$ ip netns add nstest
 omerd@myhost:~$ ip netns list
-ns1
+nstest
 ```
 
 Now remember this is a namespace seperated from the host system namespace.
@@ -50,7 +50,7 @@ omerd@myhost:~$ ip link show
     link/ether 54:12:12:da:56:23 brd ff:ff:ff:ff:ff:ff
 4: v-eth1@v-peer1: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
     link/ether 54:19:12:1a:58:23 brd ff:ff:ff:ff:ff:ff
-omerd@myhost:~$ ip link set v-peer1 netns ns1
+omerd@myhost:~$ ip link set v-peer1 netns nstest
 ```
 
 After this, we can set addresses for the interfaces and bring them up:
@@ -58,20 +58,20 @@ After this, we can set addresses for the interfaces and bring them up:
 ```bash
 omerd@myhost:~$ ip addr add 10.200.1.1/24 dev v-eth1
 omerd@myhost:~$ ip link set v-eth1 up
-omerd@myhost:~$ ip netns exec ns1 ip addr add 10.200.1.2/24 dev v-peer1      # Notice that running regular ip commands is in the system namespace
-omerd@myhost:~$ ip netns exec ns1 ip link set v-peer1 up                     # and to run the ip commands inside a namespace you need to add the 
-omerd@myhost:~$ ip netns exec ns1 ip link set lo up                          # ip netns exec <ns_name> before the command
+omerd@myhost:~$ ip netns exec nstest ip addr add 10.200.1.2/24 dev v-peer1      # Notice that running regular ip commands is in the system namespace
+omerd@myhost:~$ ip netns exec nstest ip link set v-peer1 up                     # and to run the ip commands inside a namespace you need to add the 
+omerd@myhost:~$ ip netns exec nstest ip link set lo up                          # ip netns exec <ns_name> before the command
 ```
 
-OK! now we have a new net namespace and an interface up with an address of 10.200.1.2, also we brought the loopback interface up in ns1.
+OK! now we have a new net namespace and an interface up with an address of 10.200.1.2, also we brought the loopback interface up in nstest.
 
-Now let's make a route to forward all traffic from ns1 to the system namespace i.e. to v-eth1.
+Now let's make a route to forward all traffic from nstest to the system namespace i.e. to v-eth1.
 
 ```bash
-omerd@myhost:~$ ip netns exec ns1 ip route add default via 10.200.1.1        # This adds a route in the routing table to be, by default forwarded to v-eth1
+omerd@myhost:~$ ip netns exec nstest ip route add default via 10.200.1.1        # This adds a route in the routing table to be, by default forwarded to v-eth1
 ```
 
-We are almost there, but for the internet connection we want to enable forwarding in the system namespace and share internet access between the host and ns1.
+We are almost there, but for the internet connection we want to enable forwarding in the system namespace and share internet access between the host and nstest.
 This is done by enabling forwarding using the iptables interface.
 
 ```bash
@@ -87,11 +87,13 @@ omerd@myhost:~$ iptables -A FORWARD -o eth0 -i v-eth1 -j ACCEPT              # b
 Awesome! Now let's try to see if we have a connection:
 
 ```bash
-omerd@myhost:~$ ip netns exec ns1 ping 8.8.8.8
+omerd@myhost:~$ ip netns exec nstest ping 8.8.8.8
 PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 64 bytes from 8.8.8.8: icmp_seq=1 ttl=50 time=48.6ms
 64 bytes from 8.8.8.8: icmp_seq=2 ttl=50 time=52.1ms
 ```
+
+**_NOTE:_** This network namespace game was inspired by https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/
 
 GREAT! 
 
