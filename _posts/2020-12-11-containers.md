@@ -24,5 +24,12 @@ If you're familier with the term "namespaces" from programming (in GoLang for ex
 
 In Linux, a Linux namespace is a logical seperation of operating system resources. In Linux every namespace has a type which determines the type of resources this namespace can contain. For example, a network namespace will contain network interfaces and sockets, a UTS (Unix Timesharing System) namespace contains seperate hostname and domain name, an mnt (or mount) namespace is a set filesystem mounts visible within the namespace. There are other namespaces as well, and we will get to some of them.
 
-Linux has system namespaces which are the main namespaces that all the processes in the system live in, and each process is bound to one namespace of each type.
-By default all processes run within the system (main) namespace, and when we run containers we actually run a Linux process in namespaces other than the system ones, which means new namespaces for the process are created, and the process is attached to these namespaces.
+Linux has system namespaces which are the main namespaces that all the processes in the system live in by default, and each process is bound to one namespace of each type.
+When running containers we actually run a Linux process in namespaces other than the system ones, which means new namespaces for the process are created, and the process is attached to these namespaces.
+
+Let's try, for example, playing with the network namespace. Let's start by viewing the existing ones and creating a new one:
+
+```bash
+lsns -t net # -t is namespace type
+
+```
