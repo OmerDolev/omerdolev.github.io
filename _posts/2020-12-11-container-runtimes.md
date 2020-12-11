@@ -43,7 +43,7 @@ standardized by docker for the OCI).
 If we list a few of the common container runtimes, we can see: runc, lxc, lmctfy, docker (containerd), rkt, cri-o.
 Each one, implements different functionalities in the runtime stack.
 
-![runtimes_pic](../assets/img/runtimes.png "Title")
+![runtimes_pic](/assets/img/runtimes.png "Title")
 
 High-level runtime is attributed to runtimes that aside from actually running the container are implementing image management, unpacking and image format,
 as well as API for these operations.
