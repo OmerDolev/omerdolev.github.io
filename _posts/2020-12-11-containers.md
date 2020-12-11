@@ -30,6 +30,10 @@ When running containers we actually run a Linux process in namespaces other than
 Let's try, for example, playing with the network namespace. Let's start by viewing the existing ones and creating a new one:
 
 ```bash
-lsns -t net # -t is namespace type
-
+omerd@myhost:~$ ip netns list
+omerd@myhost:~$
+omerd@myhost:~$ ip netns add ns1
+omerd@myhost:~$ ip netns list
+ns1
+omerd@myhost:~$ 
 ```
