@@ -105,9 +105,17 @@ This collection of namespaces for a container, is called a container ***sandbox*
 Now you might think, wait... what about resources, as in CPU and memory. Containers are using the system resources as any other process, they just see a different environment . When we get to K8s we would also like to control how much resources a workload uses, so for that we have cgroups (Control Groups, which is another Linux kernel feature).
 
 Now an interesting question arises: 
-#### can you run Windows containers on Linux hosts and vice-versa?
+#### Can you run Windows containers on Linux hosts and vice-versa?
 
 The short answer is no. But who likes short answers...
-The container uses the host OS kernel (after all it's just a simple process) so when running a ***LINUX*** container it needs a ***LINUX*** kernel, and when running a ***WINDOWS*** container it requires a ***WINDOWS*** kernel.
-However, you ***can*** run a ***Linux*** container on a ***WINDOWS*** host since what happens behind the scenes is that Windows runs a Linux VM (read more [here](https://docs.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/linux-containers)).
 
+Containes use the host OS kernel (after all it's just a simple process) so when running a ***LINUX*** container it needs a ***LINUX*** kernel, and when running a ***WINDOWS*** container it requires a ***WINDOWS*** kernel.
+However, you ***can*** run a ***LINUX*** container on a ***WINDOWS*** host since what happens behind the scenes is that Windows runs a Linux VM (read more [here](https://docs.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/linux-containers)).
+
+So we spilt it out already... What is the difference between a container and a VM.
+
+When running a VM, you are running a complete operating system, the kernel and user mode process, meaning you boot it up, it does its checks and tests, it starts all the required processes just like as if you pushed the "on" button of your computer.
+
+When running a container, you create a few namespaces (sometimes the namespaces will be present already), and you just spawn a process in those namespaces, which results in a much lighter, faster operation.
+
+Still, there might be some cases in which you would like to use VMs of course. Let's say that your product is a cross-platform application, and you want to test it on all the common OSs and the last 4 versions of each, for that you will need to run different kernels (operating systems) and test your product on them. Containers are not the correct solution for this use-case. Though for Saas use-cases, containers is mainly the way to go.
