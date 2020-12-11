@@ -1,5 +1,5 @@
 ---
-title: Hello Kubernetes
+title: Hello Kubernetes (K8s series - #1)
 author: Omer Dolev
 date: 2020-12-11 10:10:00 +0800
 categories: [Blogging, Tutorial]
@@ -7,9 +7,9 @@ tags: [writing, kubernetes]
 ---
 
 Kubernetes is a very big subject. I know people that have been working with it for years, and still dont have a good grasp on what's going on in certain parts.
-In the next few posts (a Kubernets series) I will try to illustrate what Kubernetes is and what is it's objective as I see it. I will delve into different concepts as we continue on.
+In the next few posts (a Kubernets series) I will go over the things I know about Kubernetes. We will delve into different concepts as we continue on.
 
-**_NOTE:_** From now on I will mostly write K8s instead of Kubernetes
+**_NOTE:_** From now on I will mostly write "K8s" instead of "Kubernetes".
 
 ## What is Kubernetes?
 
@@ -48,5 +48,17 @@ But, in the [containers](#containerized-deployments) era something changed. A ne
 This is where K8s comes in, it provides you with a framework and tools to run distributed systems resiliently.
 Distributed systems are systems or a group of workloads that run on a number of machines (can range from a few to dozens and hundreds or more), which in it's simplest form can technically be achieved quite easily (it gets complicated when new use-cases arise, but we'll get into that).
 
+K8s gives you:
+
+- **Service discovery and load balancing** which we will get into when we talk about networking in K8s.
+
+- **Storage orchestration**
+
+- **Automated rollouts and rollbacks** and lots of deployment practices
+
+- **Self healing** ensuring availability
+
+- **Secret and configuration management**
+
 There are lots of things to think about when running distributed systems, K8s is based on loads of experience Google has in this field.
-While working with K8s there were many light bulbs that went on in my head, most of which I will try share.
+The thing I like most is that while working with K8s there were many light bulbs that went on in my head, and writing this blog also helps me learn more about it.
