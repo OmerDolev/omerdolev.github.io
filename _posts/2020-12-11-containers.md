@@ -93,4 +93,12 @@ PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 64 bytes from 8.8.8.8: icmp_seq=2 ttl=50 time=52.1ms
 ```
 
-GREAT!
+GREAT! 
+
+### Back to Containers
+
+So we have an example for the net namespace, now a container is actually attached not only to a different net namespace but also to a different pid namespace (seeing a isolated pid tree), mnt namespace (seeing different mounts), uts namespace (seeing different hostname).
+This collection of namespaces for a container, is called a container ***sandbox*** in some places.
+
+Now you might think, wait... what about resources, as in CPU and memory. Containers are using the system resources as any other process, they just see a different environment . When we get to K8s we would also like to control how much resources a workload uses, so for that we have cgroups (Control Groups, which is another Linux kernel feature).
+
