@@ -109,5 +109,5 @@ Now an interesting question arises:
 
 The short answer is no. But who likes short answers...
 The container uses the host OS kernel (after all it's just a simple process) so when running a ***LINUX*** container it needs a ***LINUX*** kernel, and when running a ***WINDOWS*** container it requires a ***WINDOWS*** kernel.
-However, you ***can*** run a ***Linux*** container on a ***WINDOWS*** host since what happens behind the scenes is that Windows runs a Linux VM (read more [here][https://docs.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/linux-containers]).
+However, you ***can*** run a ***Linux*** container on a ***WINDOWS*** host since what happens behind the scenes is that Windows runs a Linux VM (read more [here](https://docs.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/linux-containers)).
 
