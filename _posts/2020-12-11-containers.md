@@ -104,3 +104,10 @@ This collection of namespaces for a container, is called a container ***sandbox*
 
 Now you might think, wait... what about resources, as in CPU and memory. Containers are using the system resources as any other process, they just see a different environment . When we get to K8s we would also like to control how much resources a workload uses, so for that we have cgroups (Control Groups, which is another Linux kernel feature).
 
+Now an interesting question arises: 
+#### can you run Windows containers on Linux hosts and vice-versa?
+
+The short answer is no. But who likes short answers...
+The container uses the host OS kernel (after all it's just a simple process) so when running a ***LINUX*** container it needs a ***LINUX*** kernel, and when running a ***WINDOWS*** container it requires a ***WINDOWS*** kernel.
+However, you ***can*** run a ***Linux*** container on a ***WINDOWS*** host since what happens behind the scenes is that Windows runs a Linux VM (read more [here][https://docs.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/linux-containers]).
+
