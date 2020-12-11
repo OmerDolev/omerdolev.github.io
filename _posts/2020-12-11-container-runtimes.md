@@ -13,6 +13,8 @@ and do some cleanup? NO...
 This is what container runtimes are for. As you will see in a moment there are many runtimes, and they are usually called low-level or high-level runtimes.
 One of the most famous container runtimes is Docker. But since Docker's release many changes took place in this field on container runtimes.
 
+**_NOTE:_** All the data about container runtimes is based on Ian Lewis's [blog](https://www.ianlewis.org/).
+
 ## Let's start some containers! oh... wait...
 
 Before we continue we need to understand how a runtime systemizes container creation. In the [previous post](https://omerdolev.github.io/posts/containers/)
