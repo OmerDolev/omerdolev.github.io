@@ -43,10 +43,13 @@ standardized by docker for the OCI).
 If we list a few of the common container runtimes, we can see: runc, lxc, lmctfy, docker (containerd), rkt, cri-o.
 Each one, implements different functionalities in the runtime stack.
 
+![runtimes_pic](../assets/img/runtimes.png "Title")
+
 High-level runtime is attributed to runtimes that aside from actually running the container are implementing image management, unpacking and image format,
 as well as API for these operations.
 
-Low-level runtime is attributed to runtimes that focus on just the part of running the container itself.
+Low-level runtime is attributed to runtimes that focus on just the part of running the container itself, those that actually use the features
+of the underlying kernel (namespaces and cgroups in the case of Linux containers).
 
 The thing is you can't really divide runtimes to high-level ones and low-level ones, since there are runtimes that implement the whole stack of functionality.
 
