@@ -114,7 +114,7 @@ However, you ***can*** run a ***LINUX*** container on a ***WINDOWS*** host since
 
 So we spilt it out already... What is the difference between a container and a VM.
 
-When running a VM, you are running a complete operating system, the kernel and user mode process, meaning you boot it up, it does its checks and tests, it starts all the required processes just like as if you pushed the "on" button of your computer.
+When running a VM, you are running a complete operating system, the kernel and user mode processes, meaning you boot it up, it does its checks and tests, it starts all the required processes just like as if you pushed the "on" button of your computer.
 
 When running a container, you create a few namespaces (sometimes the namespaces will be present already), and you just spawn a process in those namespaces, which results in a much lighter, faster operation.
 
