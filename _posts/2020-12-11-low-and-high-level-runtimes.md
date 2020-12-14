@@ -72,13 +72,13 @@ cgdelete -r -g cpu,memory:$UUID
 rm -r $ROOTFS
 ```
 
-One of the most common low-level container runtimes is [runc](https://github.com/opencontainers/runc) (which by the way, is written in GoLang).  
-runc implements the OCI runtime spec, so for running a container with runc you need a root FS for the container, and a config.json file.
+One of the most common low-level container runtimes is [*runc*](https://github.com/opencontainers/*runc*) (which by the way, is written in GoLang).  
+*runc* implements the OCI runtime spec, so for running a container with *runc* you need a root FS for the container, and a config.json file.
 
-Let's run a container with runc:
+Let's run a container with *runc*:
 
 ```bash
-# install runc in case it's not installed
+# install *runc* in case it's not installed
 sudo apt-get install runc
 # create root dir for the container and export a sample FS
 mkdir rootfs
@@ -104,8 +104,8 @@ cat config.json
 ...
 ```
 
-runc, by default, runs an sh command in a container with root FS at ./rootfs which just so happens to be our current setup :)  
-So we can just use runc:
+*runc*, by default, runs an sh command in a container with root FS at ./rootfs which just so happens to be our current setup :)  
+So we can just use *runc*:
 
 ```bash
 # run the container with config.json and ./rootfs which are in our current dir
@@ -127,7 +127,7 @@ Usually these runtimes will provide a daemon layer, or an API to perform those i
 Since low-level runtimes are more concerned with the container itself, there are also high-level runtimes features that concern a collection of containers (for example, if I want a group of containers to share a network namespace).
 
 Docker is one of the most common high-level container runtime which originally was developed as a monolith (both low and high level functionalities) client-server oriented daemon (dockerd and docker client) that provides image management, container management and execution along with an API.  
-Those pieces of high and low level functionalities were divided into separate projects: runc (low-level) and containerd(high-level).
+Those pieces of high and low level functionalities were divided into separate projects: *runc* (low-level) and containerd(high-level).
 
 <img src="/assets/img/low-and-high-level-runtimes-2.png" alt="low-and-high-level-runtimes" align="middle"/>
 
