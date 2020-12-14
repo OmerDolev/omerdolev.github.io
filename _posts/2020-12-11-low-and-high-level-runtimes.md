@@ -25,7 +25,7 @@ I am working on Ubuntu, so to control cgroups you need to run the following (all
 
 ```bash
 # install cgroups control commands
-sudo apt-get install cgroup-lite cgroup-tools cgroupfs-mount libcgroup1
+sudo apt-get install libcgroup-tools bc
 ```
 
 We will use a simple container FS as our base FS for our container:
