@@ -49,8 +49,8 @@ cgset -r memory.limit_in_bytes=100000000 $UUID
 # configuring cpu shares to 512
 cgset -r cpu.shares=512 $UUID
 # we will use the cfs mechanism here (will be explained in a seperate post)
-$ cgset -r cpu.cfs_period_us=1000000 $UUID
-$ cgset -r cpu.cfs_quota_us=2000000 $UUID
+cgset -r cpu.cfs_period_us=1000000 $UUID
+cgset -r cpu.cfs_quota_us=2000000 $UUID
 ```
 
 OK! We create our container sandbox! Lets execute a command in the container:
