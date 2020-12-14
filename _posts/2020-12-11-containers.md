@@ -30,37 +30,32 @@ When running containers we actually run a Linux process in namespaces other than
 Let's try, for example, playing with the network namespace. Let's start by viewing the existing ones and creating a new one (you might need *sudo* for those commands):
 
 ```bash
-omerd@myhost:~$ ip netns list
-omerd@myhost:~$ ip netns add nstest
-omerd@myhost:~$ ip netns list
-nstest
+# create new net namespace
+ip netns add nstest
+# verify it was created using the following
+ip netns list
 ```
 
 Now remember this is a namespace seperated from the host system namespace.
 We can now create a veth interfaces pair to connect the two namespaces.
 
 ```bash
-omerd@myhost:~$ ip link add v-eth1 type veth peer name v-peer1
-omerd@myhost:~$ ip link show
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
-    link/ether 54:12:14:d1:56:23 brd ff:ff:ff:ff:ff:ff
-3: v-peer1@v-eth1: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether 54:12:12:da:56:23 brd ff:ff:ff:ff:ff:ff
-4: v-eth1@v-peer1: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether 54:19:12:1a:58:23 brd ff:ff:ff:ff:ff:ff
-omerd@myhost:~$ ip link set v-peer1 netns nstest
+# create v-eth1 and it's peer v-peer1
+ip link add v-eth1 type veth peer name v-peer1
+# see interfaces here
+ip link show
+# put v-peer1 in new network namespace
+ip link set v-peer1 netns nstest
 ```
 
 After this, we can set addresses for the interfaces and bring them up:
 
 ```bash
-omerd@myhost:~$ ip addr add 10.200.1.1/24 dev v-eth1
-omerd@myhost:~$ ip link set v-eth1 up
-omerd@myhost:~$ ip netns exec nstest ip addr add 10.200.1.2/24 dev v-peer1      # Notice that running regular ip commands is in the system namespace
-omerd@myhost:~$ ip netns exec nstest ip link set v-peer1 up                     # and to run the ip commands inside a namespace you need to add the 
-omerd@myhost:~$ ip netns exec nstest ip link set lo up                          # ip netns exec <ns_name> before the command
+ip addr add 10.200.1.1/24 dev v-eth1
+ip link set v-eth1 up
+ip netns exec nstest ip addr add 10.200.1.2/24 dev v-peer1      # Notice that running regular ip commands is in the system namespace
+ip netns exec nstest ip link set v-peer1 up                     # and to run the ip commands inside a namespace you need to add the 
+ip netns exec nstest ip link set lo up                          # ip netns exec <ns_name> before the command
 ```
 
 OK! now we have a new net namespace and an interface up with an address of 10.200.1.2, also we brought the loopback interface up in nstest.
@@ -68,26 +63,27 @@ OK! now we have a new net namespace and an interface up with an address of 10.20
 Now let's make a route to forward all traffic from nstest to the system namespace i.e. to v-eth1.
 
 ```bash
-omerd@myhost:~$ ip netns exec nstest ip route add default via 10.200.1.1        # This adds a route in the routing table to be, by default forwarded to v-eth1
+ip netns exec nstest ip route add default via 10.200.1.1        # This adds a route in the routing table to be, by default forwarded to v-eth1
 ```
 
 We are almost there, but for the internet connection we want to enable forwarding in the system namespace and share internet access between the host and nstest.
 This is done by enabling forwarding using the iptables interface.
 
 ```bash
-omerd@myhost:~$ echo 1 > /proc/sys/net/ipv4/ip_forward                       # by default there's a '0' there disabling this
-omerd@myhost:~$ iptables -P FORWARD DROP                                     # setting default policy in the FORWARD chain to DROP
-omerd@myhost:~$ iptables -F FORWARD                                          # flushing forward rules
-omerd@myhost:~$ iptables -t nat -F                                           # flushing nat rules
-omerd@myhost:~$ iptables -t nat -A POSTROUTING -s 10:200.1.0/255.255.255.0 -o eth0 -j MASQUERADE
-omerd@myhost:~$ iptables -A FORWARD -i eth0 -o v-eth1 -j ACCEPT              # Allowing forwarding between eth0 and v-eth1
-omerd@myhost:~$ iptables -A FORWARD -o eth0 -i v-eth1 -j ACCEPT              # both ways
+echo 1 > /proc/sys/net/ipv4/ip_forward                       # by default there's a '0' there disabling this
+iptables -P FORWARD DROP                                     # setting default policy in the FORWARD chain to DROP
+iptables -F FORWARD                                          # flushing forward rules
+iptables -t nat -F                                           # flushing nat rules
+iptables -t nat -A POSTROUTING -s 10:200.1.0/255.255.255.0 -o eth0 -j MASQUERADE
+iptables -A FORWARD -i eth0 -o v-eth1 -j ACCEPT              # Allowing forwarding between eth0 and v-eth1
+iptables -A FORWARD -o eth0 -i v-eth1 -j ACCEPT              # both ways
 ```
 
 Awesome! Now let's try to see if we have a connection:
 
 ```bash
-omerd@myhost:~$ ip netns exec nstest ping 8.8.8.8
+ip netns exec nstest ping 8.8.8.8
+
 PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 64 bytes from 8.8.8.8: icmp_seq=1 ttl=50 time=48.6ms
 64 bytes from 8.8.8.8: icmp_seq=2 ttl=50 time=52.1ms
