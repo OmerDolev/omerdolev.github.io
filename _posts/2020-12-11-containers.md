@@ -6,6 +6,8 @@ categories: [Blogging, Tutorial]
 tags: [writing, kubernetes, containers]
 ---
 
+<img src="/assets/img/containers-1.png" alt="containers" align="middle" width="450" height="450"/>
+
 Containers are awesome. At first they sound quite simple, but they enable many things that weren't possible before. Here I will explain what are containers in a bit of a deep-dive so you can truly understand what they are.
 
 Containers are applications that are abstraced from the environment in which they run. This is the high-level explanation, which is of course correct but it's a bit vague and general. It is noteworthy that this abstraction is very useful for allowing applications to be deployed easily and consistently (that is regardless what machine the container runs on). What's more interesting is how containers are actually implemented (at least in Linux) and just how different they are from VMs.
@@ -20,7 +22,7 @@ This is done, using a feature of the Linux kernel called "Namespaces".
 
 ### Linux Namespaces
 
-If you're familier with the term "namespaces" from programming (in GoLang for example it's called a "package"), it's a logical seperate area containing objects isolated from other areas in our code. 
+If you're familier with the term "namespaces" from programming (in GoLang for example it's called a "package"), it's a logical seperate area containing objects isolated from other areas in our code.
 
 In Linux, a Linux namespace is a logical seperation of operating system resources. In Linux every namespace has a type which determines the type of resources this namespace can contain. For example, a network namespace will contain network interfaces and sockets, a UTS (Unix Timesharing System) namespace contains seperate hostname and domain name, an mnt (or mount) namespace is a set filesystem mounts visible within the namespace. There are other namespaces as well, and we will get to some of them.
 
@@ -54,7 +56,7 @@ After this, we can set addresses for the interfaces and bring them up:
 ip addr add 10.200.1.1/24 dev v-eth1
 ip link set v-eth1 up
 ip netns exec nstest ip addr add 10.200.1.2/24 dev v-peer1      # Notice that running regular ip commands is in the system namespace
-ip netns exec nstest ip link set v-peer1 up                     # and to run the ip commands inside a namespace you need to add the 
+ip netns exec nstest ip link set v-peer1 up                     # and to run the ip commands inside a namespace you need to add the
 ip netns exec nstest ip link set lo up                          # ip netns exec <ns_name> before the command
 ```
 
@@ -91,7 +93,7 @@ PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 
 **_NOTE:_** This network namespace game was inspired by https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/
 
-GREAT! 
+GREAT!
 
 ### Back to Containers
 
@@ -101,7 +103,7 @@ This collection of namespaces for a container, is called a container ***sandbox*
 Now you might think, wait... what about resources, as in CPU and memory. Containers are using the system resources as any other process. But we would also like to control how much resources a container uses, for that we have cgroups (Control Groups, which is another Linux kernel feature) which can cap the memory and CPU shares a process can use
 (I will get into that in the resource management for K8s post).
 
-Now an interesting question arises: 
+Now an interesting question arises:
 #### Can you run Windows containers on Linux hosts and vice-versa?
 
 The short answer is no. But who likes short answers...

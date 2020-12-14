@@ -6,6 +6,8 @@ categories: [Blogging, Tutorial]
 tags: [writing, kubernetes]
 ---
 
+<img src="/assets/img/hello-kubernetes-1.png" alt="hello-kubernetes" align="middle" width="300" height="300"/>
+
 Kubernetes is a very big subject. I know people that have been working with it for years, and still dont have a good grasp on what's going on in certain parts.
 In the next few posts (a Kubernets series) I will go over the things I know about Kubernetes. We will delve into different concepts as we continue on.
 
@@ -19,9 +21,9 @@ To find an answer to that question you can visit K8s docs, but if you are alread
 When you look at it pragmatically it's what most of the job of K8s is, running containers. But in reality it's much much more than that.
 
 There are many different factors embedded in the notion of running containers, and K8s let's you control that if you like. Making things flexible when needed but it also
-enables automation. 
+enables automation.
 
-We can start understanding things if we look at the state things were before it container orchestration solutions were common. We are actually talking about how things were 
+We can start understanding things if we look at the state things were before it container orchestration solutions were common. We are actually talking about how things were
 deployed and running over time.
 
 **_NOTE:_** When writing "workload", I mean anything that does processing, anything that runs code or runs some sort of logic, whether it is handling requests, doing some async processing etc.
