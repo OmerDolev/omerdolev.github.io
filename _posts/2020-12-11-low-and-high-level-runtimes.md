@@ -56,7 +56,9 @@ cgset -r cpu.cfs_quota_us=2000000 $UUID
 OK! We create our container sandbox! Lets execute a command in the container:
 
 ```bash
-cgexec -g cpu,memory:$UUID unshare -uinpUrf --mount-proc sh -c "/bin/hostname $UUID && chroot $ROOTFS /bin/sh"
+$ cgexec -g cpu,memory:$UUID \
+>     unshare -uinpUrf --mount-proc \
+>     sh -c "/bin/hostname $UUID && chroot $ROOTFS /bin/sh"
 / # echo "Hello from in a container"
 Hello from in a container
 / # exit
