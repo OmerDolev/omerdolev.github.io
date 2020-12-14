@@ -6,10 +6,7 @@ categories: [Blogging, Tutorial]
 tags: [writing, kubernetes, containers]
 ---
 
-Let's have a short dive into the world of container runtimes, talking about low-level and high-level runtimes. Since containers 
-(I will be talking about running container in Linux) are quite native, meaning, a container is a simple process that has a virtualized environment,
-there are many tools on the OS level that are used to run containers.
-
+Let's have a short dive into the world of container runtimes, talking about low-level and high-level runtimes.  
 One of the most common low-level container runtimes is [runc](https://github.com/opencontainers/runc) (which by the way, is written in GoLang).
 
 For example, there's [systemd-nspawn](https://wiki.archlinux.org/index.php/Systemd-nspawn) which is a tool that resembles the chroot command
