@@ -102,7 +102,8 @@ GREAT!
 So we have an example for the net namespace, now a container is actually attached not only to a different net namespace but also to a different pid namespace (seeing a isolated pid tree), mnt namespace (seeing different mounts), uts namespace (seeing different hostname).
 This collection of namespaces for a container, is called a container ***sandbox*** in some places.
 
-Now you might think, wait... what about resources, as in CPU and memory. Containers are using the system resources as any other process, they just see a different environment . When we get to K8s we would also like to control how much resources a workload uses, so for that we have cgroups (Control Groups, which is another Linux kernel feature).
+Now you might think, wait... what about resources, as in CPU and memory. Containers are using the system resources as any other process. But we would also like to control how much resources a container uses, for that we have cgroups (Control Groups, which is another Linux kernel feature) which can cap the memory and CPU shares a process can use
+(I will get into that in the resource management for K8s post).
 
 Now an interesting question arises: 
 #### Can you run Windows containers on Linux hosts and vice-versa?
