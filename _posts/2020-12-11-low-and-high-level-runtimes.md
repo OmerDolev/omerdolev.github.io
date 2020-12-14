@@ -120,7 +120,7 @@ There are also other container runtimes you can use such as lmctfy and rkt, but 
 **_Fun Fact:_** In addition, there's [systemd-nspawn](https://wiki.archlinux.org/index.php/Systemd-nspawn) which enables runnning a command or even an OS in a light-weight namespace container, it resembles the chroot command (which changes your root dir) from a user POV, but actually, it fully virtualizes the FS as well as the hostname,
 process tree and various IPC subsystems.
 
-# Let's Get Back Up
+# Getting Back Up
 
 High-level container runtime functionality is not really about running the container, it is more about the format and management of images, then passing it over to the low-level runtime to actually run the container.
 Usually these runtimes will provide a daemon layer, or an API to perform those image and container management actions.
