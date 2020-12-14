@@ -12,7 +12,7 @@ Let's have a short dive into the world of container runtimes, talking about low-
 as low-level runtimes and high-level runtimes).  
 
 As mentioned in the previous post, conatiners (in Linux of course) are implemented by Linux namespaces and cgroups. Namespaces help you virtualize
-the environment while cgroups helps you limit resources consumed by a process. The main responsibility of the low-level runtimes is the creation and 
+the environment while cgroups helps you limit resources consumed by a process. The main responsibility of the low-level runtimes is the creation and
 configuration of such namespaces and cgroups for containers, and then execution inside those namespaces and cgroups (this is the core functionality
 of the low-level runtimes, which usually implement more features).
 
@@ -120,3 +120,15 @@ There are also other container runtimes you can use such as lmctfy and rkt, but 
 **_Fun Fact:_** In addition, there's [systemd-nspawn](https://wiki.archlinux.org/index.php/Systemd-nspawn) which enables runnning a command or even an OS in a light-weight namespace container, it resembles the chroot command (which changes your root dir) from a user POV, but actually, it fully virtualizes the FS as well as the hostname,
 process tree and various IPC subsystems.
 
+# Let's Get Back Up
+
+High-level container runtime functionality is not really about running the container, it is more about the format and management of images, then passing it over to the low-level runtime to actually run the container.
+Usually these runtimes will provide a daemon layer, or an API to perform those image and container management actions.
+Since low-level runtimes are more concerned with the container itself, there are also high-level runtimes features that concern a collection of containers (for example, if I want a group of containers to share a network namespace).
+
+Docker is one of the most common high-level container runtime which originally was developed as a monolith (both low and high level functionalities) client-server oriented daemon (dockerd and docker client) that provides image management, container management and execution along with an API.  
+Those pieces of high and low level functionalities were divided into separate projects: runc (low-level) and containerd(high-level).
+
+<img src="/assets/img/low-and-high-level-runtimes-2.png" alt="low-and-high-level-runtimes" align="middle"/>
+
+dockerd provides features such as building images, and dockerd uses docker-containerd to provide features such as image management and running containers. For instance, Docker's build step is actually just some logic that interprets a Dockerfile, runs the necessary commands in a container using containerd, and saves the resulting container file system as an image.
