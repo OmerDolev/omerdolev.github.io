@@ -8,8 +8,16 @@ tags: [writing, kubernetes, containers]
 
 <img src="/assets/img/low-and-high-level-runtimes-1.png" alt="low-and-high-level-runtimes" width="300" height="300" align="middle"/>
 
-Let's have a short dive into the world of container runtimes, talking about low-level and high-level runtimes.  
+Let's have a short dive into the world of container runtimes, talking about low-level and high-level runtimes (which from now will be referred to
+as low-level runtimes and high-level runtimes).  
 One of the most common low-level container runtimes is [runc](https://github.com/opencontainers/runc) (which by the way, is written in GoLang).
+
+As mentioned in the previous post, conatiners (in Linux of course) are implemented by Linux namespaces and cgroups. Namespaces help you virtualize
+the environment while cgroups helps you limit resources consumed by a process. The main responsibility of the low-level runtimes is the creation and 
+configuration of such namespaces and cgroups for containers, and then execution inside those namespaces and cgroups (this is the core functionality
+of the low-level runtimes, which usually implement more features).
+
+
 
 For example, there's [systemd-nspawn](https://wiki.archlinux.org/index.php/Systemd-nspawn) which is a tool that resembles the chroot command
 (which changes your root dir) from a user POV, but actually, it enables runnning a command or even an OS in a light-weight namespace container.
