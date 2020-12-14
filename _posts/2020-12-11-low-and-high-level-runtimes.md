@@ -132,3 +132,43 @@ Those pieces of high and low level functionalities were divided into separate pr
 <img src="/assets/img/low-and-high-level-runtimes-2.png" alt="low-and-high-level-runtimes" align="middle"/>
 
 *dockerd* provides features such as building images, and *dockerd* uses *docker-containerd* to provide features such as image management and running containers. For instance, Docker's build step is actually just some logic that interprets a Dockerfile, runs the necessary commands in a container using *containerd*, and saves the resulting container file system as an image.
+
+*containerd* architecture implies that it provides a gRPC API to be wrapped by higher layers, giving them image pull and push, management of storage, network interfaces, primitives and namespaces management, and as expected, using *runc* as the runtime.
+
+<img src="/assets/img/low-and-high-level-runtimes-3.png" alt="low-and-high-level-runtimes" align="middle"/>
+
+*containerd* has a client cli called containerd-ctr (the command itself is *ctr*) usually used for debugging and development.
+
+Another component people sometimes miss is *container-shim*. Which helps solving the daemon-ed containers problem. By daemon-ed container problem, I mean, that when *dockerd* is running a container, the container is now a child process of *dockerd*, so *dockerd* has to keep running for the container to keep running. What if I want to upgrade Docker (and inheritingly *dockerd*)? Also, how do I get the exit code of the container? What are the file descriptors (stdin, stdout and stderr) of the container?
+
+For that *container-shim* exists. When runtimes start the container, *containerd-shim* allows *runc* to exit because it's there to be the parent of the container when *runc* exits. It keeps the file descriptors open in case containerd or dockerd die for some reason. Also it allow the container exit code to be reported back to a higher level tool (Docker for example) without it having to be the parent of the container and wait for it to exit.
+
+## So let's see it in practice
+
+```bash
+ps fxa | grep docker -A 3  
+
+2500 ?        Ssl    0:27 /usr/bin/dockerd -H unix:///var/run/docker.sock
+2556 ?        Ssl    0:18  \_ docker-containerd -l unix:///var/run/docker/libcontainerd/docker-containerd.sock
+...
+```
+
+Now let's try to run a simple container:
+
+```bash
+docker run -d alpine sleep 60
+
+ps fxa | grep dockerd -A 3
+
+2500 ?        Ssl    0:27 /usr/bin/dockerd -H unix:///var/run/docker.sock
+2556 ?        Ssl    0:18  \_ docker-containerd -l unix:///var/run/docker/libcontainerd/docker-containerd.sock
+8777 ?        Sl     0:00      \_ docker-containerd-shim 3da7... /var/run/docker/libcontainerd/3da7.. docker-runc  
+8745 ?        Ss     0:00          \_ sleep 60  
+...
+```
+
+So the "chain of command" is:
+
+dockerd --> containerd --> containerd-shim --> "sleep 60" (desired process in the container).
+
+* *runc* is not in the chain, cause it exited after starting the container :)
