@@ -131,4 +131,4 @@ Those pieces of high and low level functionalities were divided into separate pr
 
 <img src="/assets/img/low-and-high-level-runtimes-2.png" alt="low-and-high-level-runtimes" align="middle"/>
 
-dockerd provides features such as building images, and dockerd uses docker-containerd to provide features such as image management and running containers. For instance, Docker's build step is actually just some logic that interprets a Dockerfile, runs the necessary commands in a container using containerd, and saves the resulting container file system as an image.
+*dockerd* provides features such as building images, and *dockerd* uses *docker-containerd* to provide features such as image management and running containers. For instance, Docker's build step is actually just some logic that interprets a Dockerfile, runs the necessary commands in a container using *containerd*, and saves the resulting container file system as an image.
