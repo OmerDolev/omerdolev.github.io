@@ -29,7 +29,7 @@ In addition,  It's also good if we have a standard way of interactions between c
 
 <img src="/assets/img/kubernetes-control-plane-2.png" alt="kubernetes-control-plane" align="middle"/>
 
-That's where ETCD and the API server of K8s come into play. ETCD is a RESTful hierarchical key-value distributed datastore that can handle large scales (highly available), supports watching (watching for changes of entries)
+That's where ETCD and the API server of K8s come into play. ETCD is a RESTful hierarchical distributed key-value datastore that can handle large scales (highly available), supports watching (watching for changes of entries)
 and secure connections.
 
 **_Fun Fact_**: ETCD uses the raft census algorithm to create a quorum for leader election. The leader is the member through which writes are performed to ensure consistency between member's data.
