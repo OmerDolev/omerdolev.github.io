@@ -6,7 +6,7 @@ categories: [Blogging, Tutorial]
 tags: [writing, kubernetes, containers]
 ---
 
-In K8s, as in many other products the architecture is a manager/master and worker nodes architecture. In a high level it looks something like this:
+In K8s, as in many other products the architecture is a manager/master and worker nodes architecture.
 
 I'm not going to cover everything in just one post, so for now let's focus on the control plane.  
 If you needed to manage something like this, orchestrating containers, in a very large scale (hundreds to thousands of containers), how would you do it?
