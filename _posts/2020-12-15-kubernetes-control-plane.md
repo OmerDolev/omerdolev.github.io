@@ -17,15 +17,15 @@ Let's start with the basis for this application. The first thing we might ask ou
 At the lowest level, a good way to start, is to somehow know the objective (the desired state), and find our way of getting to this desired state. Basically we need a place to hold our objective,
 components will be able to check what the desired state is and then decide what actions need to be taken to get us there.
 
-OK then! This application would have a part that does the work, and it needs a place for data.
+OK then! This application would have a part that does the work, and it needs a place for data.  
+We will need a "single source of truth" (if we have more than one place where the desired state resides and somehow these different places hold different states, we will have chaos).
+This single source of truth will have to be accessible to every component.
 Also, to handle such scale, it needs to be distributed because we might need many worker nodes, doing loads of actions, also the control plane parts are going to perform many administrative actions as well.
 
-There is another point here. Let's say we got our database, if many different components will have to perform operations on it, then we will be compelled not to only have a logic in each component that connects to the database,
-we will also have to make sure that the operations are valid (so we don't have any corruption).  
+There is another point here. Let's say we got our database, if many different components will have to perform operations on it, then we will be compelled not to only have a logic in each component that connects to the database, we will also have to make sure that the operations are valid (so we don't have any corruption).  
 Doing these validations and support large operations scale is not an easy task.
-We should also have some kind of a gateway, via which components can access the data. It's easier to validate data, manage, and control.
-In addition, we will need a "single source of truth" (if we have more than one place where the desired state resides and somehow these different place hold different states, we will have chaos),
-that will be accessible to every component (via the gateway). It's also good if we have a standard way of interactions between components, so we should maybe consider having RESTful components.
+So, we should also have some kind of a gateway, via which components can access the data. It's easier to validate data, manage, and control.
+In addition,  It's also good if we have a standard way of interactions between components, so we should maybe consider having RESTful components.
 
 <img src="/assets/img/kubernetes-control-plane-2.png" alt="kubernetes-control-plane" align="middle"/>
 
