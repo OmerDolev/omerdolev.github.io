@@ -6,6 +6,8 @@ categories: [Blogging, Tutorial]
 tags: [writing, kubernetes, containers]
 ---
 
+<img src="/assets/img/kubernetes-control-plane-4.png" alt="kubernetes-control-plane" align="middle" height="300" width="300"/>
+
 In K8s, as in many other products the architecture is a manager/master and worker nodes architecture.
 
 I'm not going to cover everything in just one post, so for now let's focus on the control plane.  
@@ -38,6 +40,30 @@ I will have a post about raft, as it's a cool algorithm that many tools use.
 The API server is the gateway to the ETCD, all operations and changes to the desired state are going through the API server whose job is not only to perform them but to also, to validate, ensure the standardization
 of data and structures and check authentication and authorization to perform such actions. It's also designed to be scaled up horizontally, to support high traffic.
 
+Hurray! We have our truth source and the gateway to it :)
 
+What we need now is the tools that will actually make the actions.  
+What actions are we talking about though? Well...  
+We need tools that will check the desired state and the actual state and will bring the actual state to the desired one. We need to know the desired state of **WHAT** we manage.
+
+For all that we have the K8s resources presented below:
+
+<img src="/assets/img/kubernetes-control-plane-3.png" alt="kubernetes-control-plane" align="middle" height="500" width="850"/>
+
+And the rest of the components in the control plane: the controller manager, and the scheduler.  
+The controller manager (concisely) is responsible for managing controllers (you might think I am joking but that's true). The parts really doing stuff are the controllers. So what's a controller?
+
+A controller is essentially a loop that checks if there are ways that the desired and actual state are different, then it does what's called *reconcile* which is "bringing the current state to the desired state".
+These "reconcile" actions are done differently and independently of one another.
+
+The 2 main components of a controller is an Informer/SharedInformer and a WorkQueue.  
+Let's elaborate on the Informer a bit. The Informer is a structure that holds a few things.
+* a local **cache** where the controller can watch a list of resources and the changes they experience (whenever an object is deleted, modified or created)
+* **resource event handler** that configures an AddFunc (for when an object is added), an UpdateFunc (for when an object is updated) and a DeleteFunc(for when an object is deleted)
+* **resync period** which sets an interval for when to trigger the UpdateFunc on the items remaining in the cache. This provides a kind of configuration to periodically verify the current state and make it like the desired state. It's extremely useful in the case where the controller may have missed updates or prior actions failed.
+
+SharedInformer (as it's name implies) is a way to share caches that watch resources. It eliminates duplication of cached resources 
+
+To sum up, the overall architecture looks roughly like so:
 
 <img src="/assets/img/kubernetes-control-plane-1.png" alt="kubernetes-control-plane" align="middle"/>
