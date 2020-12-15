@@ -20,7 +20,7 @@ components will be able to check what the desired state is and then decide what 
 OK then! This application would have a part that does the work, and it needs a place for data.
 Also, to handle such scale, it needs to be distributed because we might need many worker nodes, doing loads of actions, also the control plane parts are going to perform many administrative actions as well.
 
-There is another point here. Let's say we got our database, if many different components will have to perform operations on it, then we will have not only have a logic in each component that connects to the database,
+There is another point here. Let's say we got our database, if many different components will have to perform operations on it, then we will be compelled not to only have a logic in each component that connects to the database,
 we will also have to make sure that the operations are valid (so we don't have any corruption).  
 Doing these validations and support large operations scale is not an easy task.
 We should also have some kind of a gateway, via which components can access the data. It's easier to validate data, manage, and control.
