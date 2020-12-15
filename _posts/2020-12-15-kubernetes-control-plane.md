@@ -27,12 +27,17 @@ We should also have some kind of a gateway, via which components can access the 
 In addition, we will need a "single source of truth" (if we have more than one place where the desired state resides and somehow these different place hold different states, we will have chaos),
 that will be accessible to every component (via the gateway). It's also good if we have a standard way of interactions between components, so we should maybe consider having RESTful components.
 
-That's where ETCD and the API server of K8s come into play. ETCD is a RESTful hierarchical key-value distributed datastore that can handle large scales, supports watching (watching for changes of entries)
+<img src="/assets/img/kubernetes-control-plane-2.png" alt="kubernetes-control-plane" align="middle"/>
+
+That's where ETCD and the API server of K8s come into play. ETCD is a RESTful hierarchical key-value distributed datastore that can handle large scales (highly available), supports watching (watching for changes of entries)
 and secure connections.
 
 **_Fun Fact_**: ETCD uses the raft census algorithm to create a quorum for leader election. The leader is the member through which writes are performed to ensure consistency between member's data.
 I will have a post about raft, as it's a cool algorithm that many tools use.
 
-The API server is the gateway to the ETCD, all operations and changes to the desired state are
+The API server is the gateway to the ETCD, all operations and changes to the desired state are going through the API server whose job is not only to perform them but to also, to validate, ensure the standardization
+of data and structures and check authentication and authorization to perform such actions. It's also designed to be scaled up horizontally, to support high traffic.
+
+
 
 <img src="/assets/img/kubernetes-control-plane-1.png" alt="kubernetes-control-plane" align="middle"/>
