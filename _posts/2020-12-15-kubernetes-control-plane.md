@@ -13,7 +13,7 @@ If you needed to manage something like this, orchestrating containers, in a very
 
 That's a very big question. But, let's break it down to simpler objectives or tasks.  
 
-Let's start with the basis for this application. The first thing we might ask ourselves is how would this application know what to do? When to do it? On what to do it to?  
+Let's start with the basis for this application. The first thing we might ask ourselves is how would this application know what to do? When to do it? And what to do it to?  
 At the lowest level, a good way to start, is to somehow know the objective (the desired state), and find our way of getting to this desired state. Basically we need a place to hold our objective,
 components will be able to check what the desired state is and then decide what actions need to be taken to get us there.
 
