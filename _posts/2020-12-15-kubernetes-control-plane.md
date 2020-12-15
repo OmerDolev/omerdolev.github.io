@@ -44,8 +44,9 @@ Hurray! We have our truth source and the gateway to it :)
 
 What we need now is the tools that will actually make the actions.  
 What actions are we talking about though? Well...  
-We need tools that will check the desired state and the actual state and will bring the actual state to the desired one. We need to know the desired state of **WHAT** we manage.
+Checking the desired state and the actual state and bringing the actual state closer to the desired one.
 
+Also, We need to know what we are going to manage.  
 For all that we have the K8s resources presented below:
 
 <img src="/assets/img/kubernetes-control-plane-3.png" alt="kubernetes-control-plane" align="middle" height="500" width="850"/>
@@ -62,7 +63,7 @@ Let's elaborate on the Informer a bit. The Informer is a structure that holds a 
 * **resource event handler** that configures an AddFunc (for when an object is added), an UpdateFunc (for when an object is updated) and a DeleteFunc(for when an object is deleted)
 * **resync period** which sets an interval for when to trigger the UpdateFunc on the items remaining in the cache. This provides a kind of configuration to periodically verify the current state and make it like the desired state. It's extremely useful in the case where the controller may have missed updates or prior actions failed.
 
-SharedInformer (as it's name implies) is a way to share caches that watch resources. It eliminates duplication of cached resources 
+SharedInformer (as it's name implies) is a way to share caches that watch resources. It eliminates duplication of cached resources
 
 To sum up, the overall architecture looks roughly like so:
 
