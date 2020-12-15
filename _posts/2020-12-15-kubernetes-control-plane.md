@@ -17,7 +17,7 @@ Let's start with the basis for this application. The first thing we might ask ou
 At the lowest level, a good way to start, is to somehow know the objective (the desired state), and find our way of getting to this desired state. Basically we need a place to hold our objective,
 components will be able to check what the desired state is and then decide what actions need to be taken to get us there.
 
-OK then! This application would have a part that would do the work, and it needs a place for data.
+OK then! This application would have a part that does the work, and it needs a place for data.
 Also, to handle such scale, it needs to be distributed because we might need many worker nodes, doing loads of actions, also the control plane parts are going to perform many administrative actions as well.
 
 There is another point here. Let's say we got our database, if many different components will have to perform operations on it, then we will have not only have a logic in each component that connects to the database,
