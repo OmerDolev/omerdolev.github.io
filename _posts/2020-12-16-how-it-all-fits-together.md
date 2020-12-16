@@ -17,7 +17,7 @@ Rewinding back to the containers post, we remember that Linux containers are not
 
 Pod is actually taking these namespaces and cgroups and leveraging them to make some cool stuff with "containers". Normally, people see pods like standalone boxes.
 
-<img src="/assets/img/how-it-all-fits-together-2.png" alt="how-it-all-fits-together" align="middle" height="400" />
+<img src="/assets/img/how-it-all-fits-together-2.png" alt="how-it-all-fits-together" align="middle" height="300" />
 
 But there are cool things we can do with namespaces, and they have quite a flexible functionality.  
 Let's create an nginx container with the following conf file:
