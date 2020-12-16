@@ -1,5 +1,5 @@
 ---
-title: Kubernetes Control Plane(K8s series - #5)
+title: Kubernetes Control Plane (K8s series - #5)
 author: Omer Dolev
 date: 2020-12-15 09:50:00 +0800
 categories: [Blogging, Tutorial]
@@ -7,6 +7,8 @@ tags: [writing, kubernetes, containers]
 ---
 
 <img src="/assets/img/kubernetes-control-plane-4.png" alt="kubernetes-control-plane" align="middle" height="300" width="300"/>
+
+## Overview
 
 In K8s, as in many other products the architecture is a manager/master and worker nodes architecture.
 
@@ -47,23 +49,72 @@ What actions are we talking about though? Well...
 Checking the desired state and the actual state and bringing the actual state closer to the desired one.
 
 Also, We need to know what we are going to manage.  
-For all that we have the K8s resources presented below:
+The managees are the K8s resources presented below:
 
 <img src="/assets/img/kubernetes-control-plane-3.png" alt="kubernetes-control-plane" align="middle" height="500" width="850"/>
 
-And the rest of the components in the control plane: the controller manager, and the scheduler.  
-The controller manager (concisely) is responsible for managing controllers (you might think I am joking but that's true). The parts really doing stuff are the controllers. So what's a controller?
+## Controller and Scheduler
 
-A controller is essentially a loop that checks if there are ways that the desired and actual state are different, then it does what's called *reconcile* which is "bringing the current state to the desired state".
-These "reconcile" actions are done differently and independently of one another.
+### Like Controlling Stuff?
 
-The 2 main components of a controller is an Informer/SharedInformer and a WorkQueue.  
-Let's elaborate on the Informer a bit. The Informer is a structure that holds a few things.
-* a local **cache** where the controller can watch a list of resources and the changes they experience (whenever an object is deleted, modified or created)
+And the doers of the control plane: the controller manager, and the scheduler.  
+The controller manager is responsible for the controllers, the parts that really do stuff. So what's a controller?
+
+A very good explanation is in the [K8s official Docs](https://kubernetes.io/docs/admin/kube-controller-manager/):
+
+> In applications of robotics and automation, a control loop is a non-terminating loop that regulates the state of the system. In Kubernetes, a controller is a control loop that watches the shared state of the cluster through the API server and makes changes attempting to move the current state towards the desired state. Examples of controllers that ship with Kubernetes today are the replication controller, endpoints controller, namespace controller, and serviceaccounts controller.
+
+In this excerpt (^^) some controllers are mentioned, and though it seems that controllers are exclusively handling a single resource, they are not. Controller are more "actions" oriented. Maybe actions sometimes involve a single object or resource type, but sometimes it's not like that. For example take a look at the [Tokens Controller](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#token-controller) and it's [Github](https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/serviceaccount/tokens_controller.go) if you'd like.
+
+So, a controller checks if there are ways that the desired and actual state are different, then it does what's called a *reconcile* which is "bringing the current state to the desired state".
+These "reconcile" actions are done differently and independently by different controllers.
+
+The 2 main components of a controller are an Informer/SharedInformer and a WorkQueue.  
+The Informer is a structure that holds a few things.
+* a local **cache** where the controller can watch a list of resources and their changes in state (whenever an object is deleted, modified or created)
 * **resource event handler** that configures an AddFunc (for when an object is added), an UpdateFunc (for when an object is updated) and a DeleteFunc(for when an object is deleted)
-* **resync period** which sets an interval for when to trigger the UpdateFunc on the items remaining in the cache. This provides a kind of configuration to periodically verify the current state and make it like the desired state. It's extremely useful in the case where the controller may have missed updates or prior actions failed.
+* **resync period** which sets an interval for when the controller should trigger the UpdateFunc on the items remaining in the cache. This provides a kind of configuration to periodically verify the current state and make it like the desired state. It's extremely useful in the case where the controller may have missed updates or prior actions failed.
 
-SharedInformer (as it's name implies) is a way to share caches that watch resources. It eliminates duplication of cached resources
+SharedInformer is just like a regular informer but it's shared (as it's name implies) among controllers. To share caches that watch resources eliminates duplication of cached resources, saves connections and improves overall costs for the 'watch' action.
+
+Most controllers are using the SharedInformer. So they share the cached list of resources they need to watch, but the actions they want to perform for each change is different. So you can't have the same logic running in all the controllers that look at *deployments* for example. That's why each controller has a WorkQueue, whenever a resource changes the event handler pushes a key to the WorkQueue. The controller reads off this queue and handles the reconciliation.
+
+### About Scheding
+
+The scheduler is in charge of assigning pods to nodes. Sounds EZ right? not that simple... (also read Julia Evans [post](https://jvns.ca/blog/2017/07/27/how-does-the-kubernetes-scheduler-work/) about the scheduler and the [github](https://github.com/kubernetes/kubernetes/blob/989b2fd3715d01a7757e891de2a17de5a5c2cc91/pkg/scheduler/scheduler.go))
+
+The scheduler is a kind of a controller. The desired state is that every pod has a node assigned to it, it looks for pods without nodes, and tries to make actions towards the desired state (assigning them to nodes).
+
+We could image the control loop like so
+
+```python
+while True:
+    pods = get_all_pods()
+    for pod in pods:
+        if pod.node == nil:
+            assignNode(pod)
+```
+
+It's not exactly like that though...
+
+After a little bit of digging, what actually happens inside the scheduler is:
+
+1. every pod that needs scheduling get added to a queue (the only resources scheduled are pods)
+2. when a new pod is created it also gets added to the queue
+3. the scheduler takes pods of the queue, and schedules them
+
+But what happens if a pods fails? If there is an error when scheduling the pod, it calls an error handler, and the error handler puts it back in the queue.
+
+Ok wait... isn't the previous Python implementation better? for performance reasons, no...  
+For more info about scheduling optimizations read at the following: [CoreOS - Improving Kubernetes Scheduler Performance](https://coreos.com/blog/improving-kubernetes-scheduler-performance.html)
+
+**_Fun Fact_**: The scheduler uses an Informer too (like controllers usually do)
+
+**_Another Fun Fact_**: The scheduler unlike controllers, doesn't resync. and that's something that was decided by the maintainers:
+> @brendandburns - what is it supposed to fix? I’m really against having such small resync periods, because it will significantly affect performance.
+
+and
+> I agree with @wojtek-t . If resync ever fixes a problem, it means there is an underlying correctness bug that we are hiding. I do not think resync is the right solution.
 
 To sum up, the overall architecture looks roughly like so:
 
