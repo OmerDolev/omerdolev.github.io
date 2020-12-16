@@ -55,9 +55,10 @@ The managees are the K8s resources presented below:
 
 ## Controller and Scheduler
 
-### Like Controlling Stuff?
+The doers of the control plane: the controller manager, and the scheduler.
 
-And the doers of the control plane: the controller manager, and the scheduler.  
+### Like Controlling Stuff?
+  
 The controller manager is responsible for the controllers, the parts that really do stuff. So what's a controller?
 
 A very good explanation is in the [K8s official Docs](https://kubernetes.io/docs/admin/kube-controller-manager/):
