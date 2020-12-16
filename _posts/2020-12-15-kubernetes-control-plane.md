@@ -31,6 +31,8 @@ Doing these validations and support large operations scale is not an easy task.
 So, we should also have some kind of a gateway, via which components can access the data. It's easier to validate data, manage, and control.
 In addition,  It's also good if we have a standard way of interactions between components, so we should maybe consider having RESTful components.
 
+## ETCD & API
+
 <img src="/assets/img/kubernetes-control-plane-2.png" alt="kubernetes-control-plane" align="middle"/>
 
 That's where ETCD and the API server of K8s come into play. ETCD is a RESTful hierarchical distributed key-value datastore that can handle large scales (highly available), supports watching (watching for changes of entries)
@@ -58,7 +60,7 @@ The managees are the K8s resources presented below:
 The doers of the control plane: the controller manager, and the scheduler.
 
 ### Like Controlling Stuff?
-  
+
 The controller manager is responsible for the controllers, the parts that really do stuff. So what's a controller?
 
 A very good explanation is in the [K8s official Docs](https://kubernetes.io/docs/admin/kube-controller-manager/):
