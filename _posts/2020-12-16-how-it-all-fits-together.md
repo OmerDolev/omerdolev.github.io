@@ -61,6 +61,34 @@ Then we ran the ghost container and put it in the same net, PID and IPC namespac
 
 **_NOTE_**: In this example, even though sharing only the network namespace would work (try it yourself), sharing other namespaces (like PID, IPC, etc...) can be very useful for use-cases that require a certain level of IPC (inter-process communication) or data sharing.
 
-So now that the containers are in the same net namespace, the 127.0.0.1 of the Nginx, is actually the 127.0.0.1 of the ghost as well. That's why this forwarding works.
+So now that the containers are in the same net namespace, the 127.0.0.1 of the Nginx, is actually the 127.0.0.1 of the ghost as well. That's why this forwarding works.  
+After sharing all the namespaces it would look something more like this:
 
 <img src="/assets/img/how-it-all-fits-together-3.png" alt="how-it-all-fits-together" align="middle" />
+
+So pods are almost like that, they combine namespaces with multiple processes. When K8s starts up a pod it's a bit more complicated as K8s uses CNI (container network interface, which we will talk about) and not docker networking, but the idea of sharing the environment (network, volumes - mounts, IPC - signals for example, processes, hostname...) is the same.  
+A pod would look closer to something like this:
+
+<img src="/assets/img/how-it-all-fits-together-4.png" alt="how-it-all-fits-together" align="middle" />
+
+**_NOTE_**: For those who know K8s already the cgroup there is why you can configure resources per container in the pod spec.
+
+One very good use-case for more than one container in a pod is service meshes for example. [Istio](https://istio.io/) (one of the most famous service meshes) usually implemented using what's called a side-car container.
+Meaning that it "injects" another container to the pod, that runs along with the application pod and has a view into what's going on in the pods environment. The sidecar also acts as a gateway having every packet in and out of the pod go through it, letting it extract lots of data, while enabling smart and granular enforcement of net policies.
+
+## The Kubelet and Kube-proxy
+
+The only piece of the puzzle left, is what's going on the K8s Nodes. The nodes are servers that actually run the containers and the components running there are the Kubelet and the Kube-proxy.  
+You might call them the K8s field agents :)
+
+These are the pieces of K8s that do the field work.  
+Specifically, the Kubelet is the component that on first startup registers the node into the cluster, interacts with the container runtime installed on the K8s node to run the pods, as well as reporting the status of the node and the pods running on it back to ETCD.  
+The Kube-proxy, as its name implies, is more related to the network side, specifically to the K8s services (we will talk about that).
+
+The CNI (the implementation for network in K8s) is usually a pod or a service that runs on the node (not included in Kubelet or Kube-proxy), which configures the overlay network.
+
+**_Fun Fact_**: If you run *docker ps* on a K8s node, you might notice that there are more containers than you think. In particular, you will have an additional container for each pod whose name is k8s_POD... and it's command is /pause. This container has a few functionalities and it'll be discussed in a future post. 
+
+Here is a nice chart showing an overall view of kubernetes:
+
+<img src="/assets/img/how-it-all-fits-together-5.png" alt="how-it-all-fits-together" align="middle" height="400" width="800" />
