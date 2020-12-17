@@ -87,8 +87,8 @@ The Kube-proxy, as its name implies, is more related to the network side, specif
 
 The CNI (the implementation for network in K8s) is usually a pod or a service that runs on the node (not included in Kubelet or Kube-proxy), which configures the overlay network.
 
-**_Fun Fact_**: If you run *docker ps* on a K8s node, you might notice that there are more containers than you think. In particular, you will have an additional container for each pod whose name is k8s_POD... and it's command is /pause. This container has a few functionalities and it'll be discussed in a future post. 
+**_Fun Fact_**: If you run *docker ps* on a K8s node, you might notice that there are more containers than you think. In particular, you will have an additional container for each pod whose name is k8s_POD... and it's command is /pause. This container has a few functionalities and it'll be discussed in a future post.
 
 Here is a nice chart showing an overall view of kubernetes:
 
-<img src="/assets/img/how-it-all-fits-together-5.png" alt="how-it-all-fits-together" align="middle" height="400" width="800" />
+<img src="/assets/img/how-it-all-fits-together-5.png" alt="how-it-all-fits-together" align="middle" height="450" width="900" />
