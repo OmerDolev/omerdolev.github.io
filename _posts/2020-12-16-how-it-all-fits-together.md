@@ -1,5 +1,5 @@
 ---
-title: Kubernetes - How It Fits Together (K8s series - #6)
+title: Kubernetes - How It Fits Together (K8s series - 6)
 author: Omer Dolev
 date: 2020-12-16 09:50:00 +0800
 categories: [Blogging, Tutorial]
