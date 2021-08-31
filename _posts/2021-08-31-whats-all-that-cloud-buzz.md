@@ -7,7 +7,7 @@ tags: [writing, aws, cloud]
 ---
 
 
-<img src="/assets/img/whats-all-that-cloud-buzz-1.png" alt="whats-all-that-cloud-buzz" align="middle"/>
+<img src="/assets/img/whats-all-that-cloud-buzz-pic-1.png" alt="whats-all-that-cloud-buzz" align="middle"/>
 
 ## What's All That Cloud Buzz?!
 
