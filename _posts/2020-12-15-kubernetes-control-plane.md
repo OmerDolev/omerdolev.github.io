@@ -1,5 +1,5 @@
 ---
-title: Kubernetes Control Plane (K8s series - #5)
+title: Kubernetes Control Plane (K8s series - 5)
 author: Omer Dolev
 date: 2020-12-15 09:50:00 +0800
 categories: [Blogging, Tutorial]

@@ -1,5 +1,5 @@
 ---
-title: Container Runtimes (K8s series - #3)
+title: Container Runtimes (K8s series - 3)
 author: Omer Dolev
 date: 2020-12-11 16:50:00 +0800
 categories: [Blogging, Tutorial]

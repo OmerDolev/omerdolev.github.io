@@ -1,5 +1,5 @@
 ---
-title: Hello Kubernetes (K8s series - #1)
+title: Hello Kubernetes (K8s series - 1)
 author: Omer Dolev
 date: 2020-12-11 10:10:00 +0800
 categories: [Blogging, Tutorial]
