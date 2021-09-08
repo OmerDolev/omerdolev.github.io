@@ -1,5 +1,5 @@
 ---
-title: Amazon Web Services
+title: Cloud Services
 author: Omer Dolev
 date: 2021-08-31 16:26:00 +0800
 categories: [Blogging, Tutorial]
@@ -28,4 +28,10 @@ Another thing that made cloud approachable is the accessability. All you need to
 The billing model is also quite simple. The general concept is "pay for what you use". For example, if you run a server you pay for the time the server was running. In storage however, because storage is not "temporary" you pay the fare for a certain capacity usage (e.g. per gigabyte).  
 Each service has a different billing model based on that.
 
-And this is just the beginning, there are more complicated concepts that enable cost reduction, since you can acheive the same goal with many different architectures and solutions whose costs are different from one another. Things like burst capacity for CPU, Memory and even I/O, enable utilization peak tolerance (so instead of using more servers - that cost more money - you use the same ones, but still cope with the load). Others are reservations (of resources which decreases costs dramatically but requires planning) and spot instances (resource scavenging). But the most comprehensive way to manage costs better is good architecure and practices.
+And this is just the beginning, there are more complicated concepts that enable cost reduction, since you can acheive the same goal with many different architectures and solutions whose costs are different from one another. Things like burst capacity for CPU, Memory and even I/O, enable utilization peak tolerance (so instead of using more servers - that cost more money - you use the same ones, but still cope with the load). Others are reservations (of resources which decreases costs dramatically but requires planning), spot instances (resource scavenging) and multiple storage tiers.  
+Overall, the way to manage costs is basically a good solution architecure (which integrates cost saving feature among the aforementioned).
+
+The cloud is also very versatile, cloud providers (such as AWS) develop services with different levels of abstraction. In the cloud you will find IaaS (VPC, EC2), PaaS (S3, RDS), and SaaS (Lambda, DynamoDB) solutions including specific applications that you can use in a fully managed manner (and of course, the billing model might change according to the level of abstraction).
+
+The infrastructure is also geographically distributed. The terminology might differ from provider to provider but the idea is the same. As companies have Ms or even Bs of end-users from all over the world, they need to be able to provide service to their end-users in a responsive, reliable, resilient, secure way.  
+In AWS there are regions and mulitple zones (or availability zones - AZ) within a region. AWS services have different scopes, meaning, each service or service component operates within a geographic context (AZ, regional or global). For instance, EC2 is a regional service and each instance in EC2 is operating within a single AZ. S3 (AWS storage service) is global, but the components in this service called "buckets" are regional. IAM (Identity and Access Management) service is also global, as it is the service responsible for permissions and authentication.
