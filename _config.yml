@@ -7,17 +7,18 @@
 
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 #--------------------------
-title: Omer's Tech Blog                          # the main title
+title: Omer's Blog                          # the main title
 
-tagline: Tech blog about things I learned and like.  # it will display as the sub-title
+tagline: Just writing things (some tech and some rand).  # it will display as the sub-title
 
-# description: >-                        # used by seo meta and the atom feed
+description: I want to write about and share cool stuff. Things I know, discovered, understood, and just notes that might be a future reference.
+# used by seo meta and the atom feed
 #   A minimal, portfolio, sidebar,
 #   bootstrap Jekyll theme with responsive web design
 #   and focuses on text presentation.
 
 # fill in the base hostname & protocol for your site, e.g., 'https://username.github.io'
-url: ''
+url: 'https://omerdolev.github.io/'
 
 author: Omer Dolev                  # change to your full name
 
